@@ -1,0 +1,40 @@
+{% extends backend_base.html %}
+{% block page-title %}趣淘圈{% end %}
+{% block content %}
+<!--div class="text-right">
+    <a class="btn btn-primary" href="/manager/add?type=goods_type">新增</a>
+</div-->
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th></th>
+            <th>用户</th>
+            <th>类型</th>
+            <th>商品名称</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for i in data%}
+        <tr>
+            <td><img class="avatar-img img-circle" src="{{ i['user_info'].get('avatar', '') }}" alt="分类图片……"></td>
+            <td><a href="/manager/user/info?id={{i['user_id']}}">{{ i['user_info'].get('nickname', '') }}</a> </td>
+            <td>
+                {%if i['type'] ==0%} 发布 {%end%}
+                {%if i['type'] ==1%} 评论 {%end%}
+                {%if i['type'] ==2%} 求购 {%end%}
+            </td>
+            <td>{%if i['type'] <2%} <a href="/manager/goods/info/{{i['goods_id']}}" target="_blank"> {{ i['goods_name'] }}</a> {%end%}</td>
+            <td>
+                <a class="btn btn-danger delete" href="javascript:void(0)"  data-id="{{i['_id']}}">删除</a>
+            </td>
+        </tr>
+        {%end%}
+    </tbody>
+</table>
+
+<div class="text-center">
+    {{ pagination }}
+</div>
+{% end %}

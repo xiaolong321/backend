@@ -1,0 +1,10 @@
+dev.py
+*.pyc
+nohup.out
+*.sw[o|p|n]
+/apps/backend/test_handler.py
+log
+static/version
+spa/dist/
+spa/node_modules/
+spa/pm-debug.log

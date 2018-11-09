@@ -1,0 +1,36 @@
+{% extends backend_base.html %}
+{% block page-title %}最新用户{% end %}
+{% block content %}
+
+<table class="table table-striped">
+    <thead>
+    	<tr>
+    		<th>头像</th>
+    		<th>用户名</th>
+    		<th>等级</th>
+    		<th>商品总数</th>
+    		<th>注册时间</th>
+    		<th>操作</th>
+    	</tr>
+    </thead>
+    <tbody>
+    	{%for i in data%}
+    		<!--{#{i}#}-->
+    		<tr>
+    			<td><img class="avatar80" src="{{i['avatar']}}" alt="头像"></td>
+    			<td><a href="/manager/user/info?id={{i['_id']}}">{{i["nickname"]}}</a></td>
+    			<td>{{i["level"]}}{% if i['phone'] == '13000000000' %}虚拟用户{% end %}</td>
+    			<td>{{i["selling_count"]}}</td>
+    			<td>{{i["create_at"]}}</td>
+    			<td>
+    				<a href="/manager/user/info?id={{i['_id']}}" class="btn btn-primary">详情</a>
+    			</td>
+    		</tr>
+    	{%end%}
+    </tbody>
+</table>
+
+<div class="text-center">
+    {{ pagination }}
+</div>
+{% end %}

@@ -1,0 +1,106 @@
+{% extends backend_base.html %}
+{% block page-title %}用户信息{% end %}
+{% block search %}
+{#<form>
+    <div class="input-group">
+        <input class="form-control1 input-search" name="search" type="search" placeholder="商品或被邀请者名称" required>
+        <span class="input-group-btn">
+            <button class="btn btn-success" type="submit"><i class="fa fa-search"></i></button>
+        </span>
+    </div>
+</form>#}
+{% end %}
+{% block content %}
+<link rel="stylesheet" href="/static/css/user_info.css" />
+<script src="/static/js/pagination_query.js"></script>
+<div class="header">
+    <img class="avatar" src={{ me.avatar }}>
+    <span class="nickname">{{ me.nickname }}</span>
+</div>
+<table class="table table-striped table-detail">
+    <tr>
+        <th>注册时间</th><td>{{ me.create_at }}</td>
+    </tr>
+    <tr>
+        <th>邀请码</th><td>{{ me.invitation_code }}</td>
+    </tr>
+    <tr>
+        <th>位置</th><td>{{ me.location }}</td>
+    </tr>
+    <tr>
+        <th>认证状态</th><td>{{ me.verify_status }}</td>
+    </tr>
+    <tr>
+        <th>邀请人</th>
+        <td>
+            {%if me.invited_user%} 
+                <a href="/manager/user/info?id={{me.invited_user.get('_id')}}">
+                    {{me.invited_user.get('nickname')}}
+                </a>
+            {%else%} - 
+            
+            {%end%}
+        </td>
+    </tr>
+</table>
+<ul class="nav nav-tabs">
+    <li{% if type == "goods" %} class="active"{% end %}>
+        <a href="?id={{me._id}}&type=goods">商品列表</a>
+    </li>
+    <li{% if type == "invitation" %} class="active"{% end %}>
+        <a href="?id={{me._id}}&type=invitation">邀请列表</a>
+    </li>
+</ul>
+<div class="content">
+    {% if type == "goods" %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>商品图片</th>
+                    <th>商品名称</th>
+                    <th>商品类别</th>
+                    <th>发布日期</th>
+                    <th>状态</th>
+                    <th>价格</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for i in data%}
+                <tr>
+                    <td><img class="goods-img" src="{%if i['images']%}{{i['images'][0]}} {%end%}" alt="商品图片……"></td>
+                    <td>{{i["goods_name"]}}</td>
+                    <td>{{"".join(i["goods_type"]) }} </td>
+                    <td>{{i["create_at"]}}</td>
+                    <td>{% if i["status"] == '0' %}上架中{% elif i["status"] == '1' %}已下架{% elif i["status"] == '2' %}已归档{% else %}未知状态{{ i["status"] }}{% end %}</td>
+                    <td>￥{{i["price"]}}</td>
+                </tr>
+                {%end%}
+            </tbody>
+        </table>
+    {% elif type == "invitation" %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>头像</th>
+                    <th>用户名</th>
+                    <th>商品总数</th>
+                    <th>邀请总数</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for i in data%}
+                    <tr>
+                        <td><img class="avatar" src="{{i['avatar']}}"></td>
+                        <td><a href="/manager/user/info?id={{i['_id']}}">{{i["nickname"]}}</a></td>
+                        <td>{{i["selling_count"]}}</td>
+                        <td>{{i["invite_count"]}}</td>
+                    </tr>
+                {%end%}
+            </tbody>
+        </table>
+    {% end %}
+</div>
+<div class="text-center" query="id={{me._id}}&type={{type}}">
+	{{ pagination }}
+</div>
+{% end %}

@@ -1,0 +1,39 @@
+<script>
+    $(function(){
+        var url = document.location.href;
+        $("ul.pagination a").each(function(){
+            link = $(this).attr('href') ? $(this).attr('href').split('?')[1] : ''
+            var u = url.split('?')
+            if(typeof(u[1]) == 'string'){
+                url = url.replace(/(&|\/?)page=(\d+)?.*/, '')
+                if($(this).attr('data-id')) link = "&page="+ $(this).attr('data-id')
+            }else{
+                link = "?" + link
+            }
+            $(this).attr('href', url+link)
+        })
+    })
+</script>
+{%if bool(num)%}
+<ul class="pagination">
+	{% if page == 1 %}
+		<li class="disabled"><a><i class="fa fa-angle-left"></i></a></li>
+	{% else %}
+		<li><a href="?page={{page-1}}" data-id='{{page-1}}'><i class="fa fa-angle-left"></i></a></li>
+	{% end %}
+	{% for p in page_list %}
+		{% if p == '...' %}
+			<li class="disabled"><a>...</a></li>
+		{% else%}
+			<li class="{% if p == str(page) %}active{% end %}" ><a data-id='{{p}}' href="?page={{p}}">{{p}}</a></li>
+		{% end %}
+	{% end %}
+	{% if page == page_num %}
+		<li class="disabled"><a><i class="fa fa-angle-right"></i></a></li>
+	{% else %}
+		<li><a href="?page={{page+1}}" data-id='{{page+1}}'><i class="fa fa-angle-right"></i></a></li>
+	{% end %}
+</ul>
+{%else%}
+<p>暂时没有数据哦</p>
+{%end%}

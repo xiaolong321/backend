@@ -1,0 +1,66 @@
+{% extends backend_base.html %}
+{% block page-title %}取消订单审核{% end %} 
+{% block content %}
+<style>
+	.goods_img {
+		width: 200px;
+		float: left;
+		margin-right: 10px;
+	}
+</style>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>用户名</th>
+			<th>头像</th>
+			<th>订单信息</th>
+			<th>申请理由</th>
+			<th>操作</th>
+		</tr>
+	</thead>
+	<tbody>{%for item in data%}
+		<tr oid="{{item.order_num}}">
+			<td>{{item.nickname}}</td>
+			<td>
+				<img class="avatar80" src="{{ item.avatar }}" alt="头像">
+			</td>
+			<td>
+				<img src="{{item.goods_info['images'][0]}}" class="goods_img">
+				订单号：{{item.order_num}} <br>
+				商品名称：{{item.goods_info['goods_name']}} <br>
+				描述：{{item.goods_info['introduce']}} <br>
+				价格：{{item.goods_info['price']}} <br>
+				卖家：<a href="/manager/user/info?id={{item.goods_info['seller_id']}}">{{item.goods_info['seller_nickname']}}</a>
+			</td>
+			<td>
+				理由：{{['我买错了','未按时间送达','其他原因'][item.reason]}} <br>
+				{%if item.reason is 2 and item.other_reason%}说明：{{item.other_reason}}{%end%}
+			</td>
+			<td>
+				<input type="button" class="btn btn-primary btn-agree" value="通过">
+				<input type="button" class="btn btn-danger btn-disagree" value="拒绝">
+			</td>
+		</tr>
+	{%end%}</tbody>
+</table>
+
+<div class="text-center">
+	{{ pagination }}
+</div>
+<script>
+	// 操作
+	$(".btn-agree,.btn-disagree").click(function(){
+		var $this = $(this);
+		data = {
+			order_num: $this.parents('tr:eq(0)').attr('oid'),
+			action: $(this).hasClass('btn-agree') ? '1' : 0
+		};
+		$.post(null, data, function(data){
+			if (data.errno == 0) {
+				// 改变提示文字，去掉按钮
+				$this.parent().html('已' + $this.val());
+			}
+		});
+	});
+</script>
+{% end %}

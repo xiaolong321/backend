@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>趣淘 - {{data.goods_name}}</title>
+	<link href="/static/css/share.css" rel='stylesheet' type='text/css' />
+	<script src="/static/js/share.js"></script>
+	<link rel="shortcut icon" href="/static/images/logo@3x.png" />
+</head>
+<body>
+	<header>
+		<img class="logo" src="/static/images/logo39@2x.png">
+		<img class="qutao" src="/static/images/qutao2@3x.png">
+		<span class="summary">身边的闲置交易APP</span>
+	</header>
+	<div id="carousel">
+		<ul>
+			{% for img in data.images %}
+			<li><img src="{{img}}"></li>
+			{% end %}
+		</ul>
+		<div class="btnbar"></div>
+		<div class="seller_info">
+			<img src="{{data.seller_avatar}}" class="avatar">
+			<span class="nickname">{{data.seller_nickname}}</span>
+		</div>
+	</div>
+	<div class="goods_info">
+		<div class="row">
+			<span class="goods_name">{{data.goods_name}}</span>
+			<span class="price">￥{{data.price}}</span>
+		</div>
+		<div class="row">
+			<span class="location">发布于 {{data.community or '未知小区'}}</span>
+			<span class="create_at">{{data.create_at}}</span>
+		</div>
+		<div class="tip">到趣淘APP中购买此商品</div>
+	</div>
+	<footer>
+		<a class="transition_color btn_download" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.quseit.letgo">去趣淘APP逛逛</a>
+	</footer>
+</body>
+</html>

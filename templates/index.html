@@ -1,0 +1,81 @@
+{% extends backend_base.html %}
+{%block search%} {%end%}
+{% block page-title %}首页{% end %}
+{% block content %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<style>
+    #page-wrapper{
+        background-color: rgb(238, 238, 238) !important;
+    }
+    .static-row div.col-md-4 div{
+        padding: 20px;
+        background: #f9f9f9;
+        box-shadow: 0 3px 4px #ddd;
+        position: relative;
+        transition: transform .2s ease-in-out;
+        -webkit-transition: -webkit-transform .2s ease-in-out;
+        -moz-transition: -moz-transform .2s ease-in-out;
+        -ms-transition: -ms-transform .2s ease-in-out;
+        /* height: 150px; */
+        text-align: center;
+        line-height: 120px;
+    }
+</style>
+    <script>
+        $(function () {
+            Highcharts.chart('container', {
+        title: {
+            text: '趣淘新增用户7天统计走势图',
+            x: -20 //center
+        },
+        subtitle: {
+            text: '新增用户',
+            x: -20
+        },
+        xAxis: {
+            categories: {{data['date']}}
+        },
+        yAxis: {
+            title: {
+                text: '用户量(个)'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: '个'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: '新增用户',
+            data: {{data['dau']}}
+        }]
+    });
+        });
+    </script>
+    <div class="row static-row">
+        <div class="col-md-4">
+            <div>商品总量：{{goods_count}}</div>
+        </div>
+        <div class="col-md-4">
+            <div>用户总量：{{user_count}}</div>
+        </div>
+        <div class="col-md-4">
+            <div>当天新增用户：{{dnu_user}}</div>
+        </div>
+    </div>
+    
+    <div class="container-pull" style="margin-top:40px">
+        <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+ 
+    <div>
+{% end %}

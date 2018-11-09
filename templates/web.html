@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>趣淘 - 趣在交友，淘你想淘</title>
+    <meta name="keywords" content="趣淘、社交、购物、有趣" />
+    <meta name="description" content="趣淘，是一个让你获得时尚生活的社交购物应用，你可以在趣淘到无数实用有趣的商品" />
+    <link href="/static/css/web.css" rel="stylesheet" />
+    <link href="/static/css/font-awesome.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/static/images/logo@3x.png" />
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">  
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/static/js/web.js"></script>
+</head>
+<body>
+    <!--h5菜单 -->
+    <div class="side-nav hide">
+        <ul class="list-unstyled side-menu">
+            <h4>商品类型</h4>
+            {%for nav in goods_type_nav%}
+            <li><a href="?goods_type={{nav['name']}}">{{nav['name']}}</a></li>
+            {%end%}
+        <ul>
+    </div>
+    <header>
+        <div class="container"> 
+           <div class="navbar-header" id="top-navbar"> 
+            <button aria-controls="bs-navbar" aria-expanded="false" class="collapsed navbar-toggle" data-target="#bs-navbar" data-toggle="collapse" type="button">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button> 
+            <a href="/" class="navbar-brand">趣淘</a> 
+           </div> 
+        </div>
+        <div class="container">
+            <div class="download col-md-6 text-center">
+                <div class="ios download-btn col-md-6" onclick="javascript:location.href='{{iOS_download}}'">
+                    <img src="/static/images/icon-ios.png"></img>
+                    <span>APP &nbsp; Store<br>立即下载</span>
+                </div>
+                <div class="android download-btn col-md-6" onclick="javascript:location.href='{{Android_download}}'">
+                    <img src="/static/images/icon-android.png"></img>
+                    <span>安卓应用市场<br>立即下载</span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="phone">
+                    <img src="/static/images/phone.png">
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="main" id="goods-main">
+        <div class="container" style="">
+            <div class="goods-type col-md-3">
+                <aside>
+                    <!--h2>地区选择</h2>
+                    <ul>
+                        <li>北京</li>
+                        <li>上海</li>
+                        <li>广州</li>
+                        <li>杭州</li>
+                        <li>广西</li>
+                        <li>成都</li>
+                        <li>西安</li>
+                        <li>全国 >></li>
+                    </ul-->
+                    <h2>商品类型</h2>
+                    <ul class="list-inline">
+                        {%for goods_type in goods_type_list%}
+                            <li><a href="?goods_type={{goods_type['name']}}">{{goods_type['name']}}</a></li>
+                        {%end%}
+                    </ul>
+                </aside>
+            </div>
+            <div class="col-md-9">
+                <div class="row">
+                    <ul class="goods-type-list list-inline ">
+                        {%for item in goods_list%}
+                        <li class="col-md-3">
+                            <a href="/api/share?id={{item['_id']}}">
+                                <div class="trapezoid">
+                                    {{item['goods_type']}}
+                                </div>
+                                <img src="{%if item['images']%} {{item['images'][0]}}?imageMogr2/thumbnail/430x430! {%end%}" class="goods-img">
+                            </a>
+                        </li>
+                        {%end%}
+                    </ul>
+                </div>
+                <div class="row">
+                    <div class="text-center">
+                        {{ pagination }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--div class="container" id="recommend-panel">
+            <div class="col-md-12">
+                <center class="recommend">为您推荐</center>
+            </div>
+        </div>
+        <div class="container main-goods">
+            <div class="col-md-12">
+                <ul class="list-inline">
+                    <li class="col-md-3 goods-panel">
+                        <div class="goods-item">
+                            <img src="http://ohgdcjojy.bkt.clouddn.com/attach/7bac0ce4b86e11e6924900163e005d0d.jpeg" class="goods-img">
+                            <div class="goods-info">
+                                <div class="goods-name">商品名称</div>
+                                <div class="goods-price"><span class="price-tag">200</span></div>
+                                <div class="user-info ">
+                                    <div class="pull-left col-md-6">
+                                        <img class="img-circle center-block avatar" src="https://avatars1.githubusercontent.com/u/3059527?v=3&amp;s=460">
+                                        <label class="time">15分钟前</label>
+                                    </div> 
+                                    <div class="pull-right col-md-6 local-panel">
+                                        <img src="/static/images/logo@3x.png" class="icon-local" />
+                                        <span>北京</span>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div-->
+    </div>
+    <div class="bottom-row">
+        <div class="container">
+            <div class="col-md-2 pull-right" id="qrcode">
+                <img src="/static/images/qutao-qrode.png" width="100%"/>
+                <p class="text-center">二维码扫描下载</p>    
+            </div>
+            <div class="col-md-4 pull-right">
+                <img src="/static/images/phone.png">
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="copyright text-center">copyright www.quseit.cn</div>
+    </footer>
+</body>
+</html>

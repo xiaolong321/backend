@@ -1,0 +1,93 @@
+{% extends backend_base.html %}
+{% block page-title %}商品审核{% end %}
+{% block content %}
+<link rel="stylesheet" href="/static/css/review.css" />
+<script src="/static/js/pagination_query.js"></script>
+<div id="modal_map" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                选择小区
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div id="map_container"></div>
+                <input type="text" readonly="true" id="lnglat">
+                <div id="map_panel"></div>
+                <!-- <div id="map_search">
+                    <input class="form-control1" placeholder="请输入关键字进行搜索" id="tipinput">
+                </div> -->
+            </div>
+            <!-- <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">取消</button>
+                <button class="btn btn-primary">确定</button>
+            </div> -->
+        </div>
+    </div>
+</div>
+<ul class="nav nav-tabs">
+    {% for i, tab in enumerate(tabs) %}
+    <li{% if review == str(i) %} class="active"{% end %}>
+        <a href="?review={{i}}">{{tab}} {%if review==str(i)%}({{num}})件{%end%}</a>
+    </li>
+    {% end %}
+</ul>
+<table class="table table-striped">
+    <thead>
+    	<tr>
+    		<th>商品图片</th>
+    		<th width="12%">商品名称</th>
+    		<th width="12%">小区</th>
+    		<th>商品类别</th>
+    		<th>发布者</th>
+    		<th width="10%">发布日期</th>
+    		<th width="8%">状态</th>
+    		<th width="5%">价格</th>
+    		<th>操作</th>
+    	</tr>
+    </thead>
+    <tbody>
+    	{%for i in data%}
+    		<tr gid="{{i['_id']}}" lnglat="{{i['lng_lat']}}" geohash="{{i['geohash']}}">
+    			<td><img class="goods-img" src="{%if i['images']%}{{i['images'][0]}} {%end%}" alt="商品图片……"></td>
+    			<td>{{i["goods_name"]}}</td>
+    			<td>
+                    <span class="community">{{i["community"]}}</span>
+                    <a class="btn_select_community btn btn-sm btn-default">切换</a>
+                </td>
+    			<td>{{"".join(i["goods_type"])}}</td>
+    			<td><a href="#">{{i["seller"]}}</a></td>
+    			<td>{{i["create_at"]}}</td>
+    			<td>{% if i["review"] == '0' %}未审核{% elif i["review"] == '1' %}已通过{% elif i["review"] == '2' %}未通过{% elif i["review"] == '3' %}被举报{% else %}未知状态{{ i["status"] }}{% end %}{% if i['status'] == '2' %} 已归档{% end %}</td>
+    			<td>￥{{i["price"]}}</td>
+    			<td>
+					  <a class="btn btn-primary" href="/manager/api/update/goods?gid={{ i["_id"] }}&attr=review&v=1">通过</a>
+					  <a class="btn btn-success" href="/manager/api/update/goods?gid={{ i["_id"] }}&attr=review&v=2">拒绝</a>
+					  <a class="btn btn-default" href="/manager/goods/info/{{ i["_id"] }}" target="_blank">详情</a>
+    			</td>
+    		</tr>
+    	{%end%}
+    </tbody>
+</table>
+
+<div class="text-center" query="review={{review}}">
+    {{ pagination }}
+</div>
+<template id="template">
+    <div id="marker-content">
+        <h4 class="marker-name"></h4>
+        <span class="marker-desc"></span>
+        <div class="text-center">
+            <button class="btn btn-sm btn-default btn-usethis">选中</button>
+        </div>
+    </div>
+    <div id="myposition">
+        <h4 class="marker-name">我的位置</h4>
+        <div class="text-center lnglat"></div>
+    </div>
+</template>
+
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=144c97a3506ce5f595ee984969b60505"></script>
+<script> window.community = $.parseJSON('{{community}}'); </script>
+<script src="/static/js/review.js"></script>
+{% end %}

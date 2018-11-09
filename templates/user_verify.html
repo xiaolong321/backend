@@ -1,0 +1,94 @@
+{% extends backend_base.html %}
+{% block page-title %}实名认证审核{% end %} 
+{% block content %}
+<style>
+	.photo-thumb {
+		cursor: pointer;
+		width: 130px;
+	}
+	.photo-lg {
+		width: 100%;
+	}
+</style>
+<div id="modal_photo" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				持证照片
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<div class="modal-body">
+				<img class="photo-lg" />
+			</div>
+		</div>
+	</div>
+</div>
+<ul class="nav nav-tabs">
+	<li{%if status == "0"%} class="active"{%end%}><a href="?status=0">未通过</a></li>
+	<li{%if status == "1"%} class="active"{%end%}><a href="?status=1">已通过</a></li>
+</ul>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>头像</th>
+			<th>用户名</th>
+			<th>实名信息</th>
+			<th>持证照<span class="text-danger">(点击查看大图)</span></th>
+			{%if status == "0"%}<th>操作</th>{%end%}
+		</tr>
+	</thead>
+	<tbody>{%for item in data%}
+		<tr uid="{{item._id}}">
+			<td>
+				<img class="avatar80" src="{{ item.avatar }}" alt="头像"/>
+			</td>
+			<td>{{item.nickname}}</td>
+			<td>
+				姓名：{{item.fullname}} <br />
+				手机号：{{item.phone}} <br />
+				地址：{{item.address}} <br />
+				支付宝帐号：{{item.alipay}}
+			</td>
+			<td><img class="photo-thumb" src="{{item.photo}}" alt="持证照"></td>
+			<td>
+				<input type="button" class="btn btn-primary btn-agree" value="通过">
+				<input type="button" class="btn btn-danger btn-disagree" value="拒绝">
+			</td>
+		</tr>
+	{%end%}</tbody>
+</table>
+
+<div class="text-center">
+	{{ pagination }}
+</div>
+<script>
+	$(".photo-thumb").click(function(){
+		$modal = $("#modal_photo");
+		$modal.find('.photo-lg').attr('src', this.src);
+		$modal.modal('show');
+	});
+	// $(".btn-verify").click(function(){
+	// 	btn = this;
+	// 	$.post('/manager/user/verify', {user_id: $(this).attr('uid')}, function(data){
+	// 		if (data.errno == 0) {
+	// 			btn.disabled = true;
+	// 			btn.value = '已认证';
+	// 		}
+	// 	});
+	// });
+	// 操作
+	$(".btn-agree,.btn-disagree").click(function(){
+		var $this = $(this);
+		data = {
+			user_id: $this.parents('tr:eq(0)').attr('uid'),
+			action: $(this).hasClass('btn-agree') ? '1' : 0
+		};
+		$.post('', data, function(data){
+			if (data.errno == 0) {
+				// 改变提示文字，去掉按钮
+				$this.parent().html('已' + $this.val());
+			}
+		});
+	});
+</script>
+{% end %}

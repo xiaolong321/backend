@@ -1,0 +1,54 @@
+{% extends backend_base.html %}
+{% block page-title %}{{title}}{% end %}
+{% block search %}{% end %}
+{% block content %}
+<!-- 修改成功的提示框 -->
+<!-- Modal Structure -->
+<div id="modal_success" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>保存成功</h4>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">继续修改</button>
+                <button class="btn btn-primary btn-goback">返回上一页</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form method="POST" class="form-horizontal" id="manager_modify_form" action='' enctype="multipart/form-data">
+    {% for i in input_list %}
+    <div class="form-group">
+        <label class="col-sm-3 text-right">{{ i['name'] }}</label>
+        <div class="col-sm-9">
+            <input class="form-control1" type='{{i['type']}}' id="{{i['alias']}}" name="{{i['alias']}}" value="{{i['value']}}">
+        </div>
+    </div>
+    {% end %}
+    {%if data and data['logo']%}
+        <div class="form-group">
+            <label class="col-sm-3 text-right">logo</label>
+            <div class="col-sm-9">
+                <img src="{{data['logo']}}" width="100px"/>
+            </div>
+        </div>
+    {%end%}
+    {%if data and data.get('logo2')%}
+        <div class="form-group">
+            <label class="col-sm-3 text-right">logo2</label>
+            <div class="col-sm-9">
+                <img src="{{data.get('logo2')}}" width="100px"/>
+            </div>
+        </div>
+    {%end%}
+    <div class="form-group">
+        <label class="col-sm-3 text-right"></label>
+        <div class="col-sm-9">
+            <button class="btn btn-primary" type="submit">提交</button>
+        </div>
+    </div>
+</form>
+<script src="{{ static_url('js/manager_modify.js') }}"></script>
+{% end %}

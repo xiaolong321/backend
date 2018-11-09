@@ -1,0 +1,189 @@
+{%extends backend_base.html%}
+{%block title%} 发布商品 {%end%}
+{%block search%} {%end%}
+{%block content%}
+    <style>
+        .form-control{
+            border: 1px solid #ccc !important;
+            border-radius: 4px !important;
+        }
+        .margin-top-20{
+            margin-top: 20px;
+        }
+        #comment_panel{
+            padding-left: 15px;
+        }
+        #comment_panel li{
+            border-bottom: 1px solid #ddd;
+            padding: 20px 0px;
+        }
+    </style>
+    <h3 class="page-header">商品信息</h3>
+    <div class="row">
+        <div class="col-md-12">
+            <form>
+                <div class="form-group col-md-6">
+                    <label for="">商品名称</label>
+                    <input type="text" class="form-control" value="{{data.get('goods_name', '')}}" id="goods_name" placeholder="商品名称">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="">商品类别</label>
+                    <select class="form-control" id="goods_type">
+                        {%if data.get('goods_type')%}<option value="{{data.get('goods_type')}}"  selected>{{data.get('goods_type')}}</option> {%end%}
+                        {%for type in goods_type_list%}
+                            <option value="{{type['name']}}" {%if type['name'] == data.get('goods_type', '')%} selected {%end%}>{{type['name']}}</option>
+                        {%end%}
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="">价格</label>
+                    <input type="text" class="form-control" value="{{data.get('price', '')}}" id="price" placeholder="价格">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="">所在小区名称</label>
+                    <select class="form-control" id="community_list">
+                    {%if goods_community_list%}
+                        {%for comm in goods_community_list%}
+                            <option value="{{comm['name']}}" {%if comm['name'] == data.get('community', '') %} selected {%end%}>{{comm['name']}}</option>
+                        {%end%}
+                    {%end%}
+    
+                    {%if data.get('community', '')%} <option value="{{data.get('community', '')}}">{{data.get('community', '')}}</option>{%end%}
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="">是否全局推送</label>
+                    <input type="checkbox" class="form-control" value="1" id="is_global" name="is_global" {%if data.get('is_global', '') == '1'%} checked {%end%}/>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="">是否新品</label>
+                    <input type="checkbox" class="form-control" value="1" id="is_new" name="is_new" {%if data.get('is_new', '') == '1'%} checked {%end%}/>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="">是否需要在线支付</label>
+                    <input type="checkbox" class="form-control" value="1" id="is_pay_online" name="is_pay_online" {%if data.get('can_pay_online', '') == '1'%} checked {%end%}/>
+                </div>
+                <div class="form-group col-md-12">
+                    <label for="">所属用户（<a href="/manager/users/" target="_blank">添加</a>）</label>
+                    <select class="form-control" id="user_list">
+                    {%if data.get('user_info')%}
+                        <option value="{{data.get('seller_id')}}">发布用户：{{data['user_info'].get('nickname')}}</option>
+                    {%end%}
+                    {%if user_list%}
+                        {%for user in user_list%}
+                            <option value="{{user['user_id']}}" {%if user['user_id'] == data.get('seller_id')%} selected {%end%}>{{user.get('nickname', '')}}</option>
+                        {%end%}
+                    {%end%}
+                    </select>
+                </div>
+                <div class="form-group col-md-12">
+                    <label for="">商品描述</label>
+                    <textarea rows="3" cols="20" class="form-control" placeholder="商品描述" id="introduce">{{data.get('introduce', '')}}</textarea>
+                </div>
+            </form>
+        </div>
+    </div>
+    <h3 class="page-header">商品图片</h3>
+    <div class="row" style="margin-bottom:30px;">
+        <div class="col-md-12">
+        {%if data.get('images')%}
+            {%for item in data.get('images')%}
+                <div class="col-md-2 img-panel" id="md-{{data.get('images').index(item)}}">
+                    <img src="{{item}}" width="100%"/>
+                    <i class="remove-img" data-id="{{data.get('images').index(item)}}">
+                        <span class="glyphicon glyphicon-trash text-danger"></span>
+                    </i>
+                </div>
+            {%end%}
+        {%end%}    
+        </div>
+    </div>
+    <div class="">
+        <input type="file" name="image" id="upload-image" class="file" multiple data-min-file-count="1"/> 
+    </div>
+    <div class="">
+        <p style="color:grey">＊提示：请上传图片后再点击“提交”</p>
+        <button class="btn btn-info btn-fill" id="btn-submit">提交</button>
+    </div>
+    <link rel="stylesheet" type="text/css" href="http://www.meiliangzi.cn/static/css/fileinput.min.css">
+    <script type="text/javascript" src='http://www.meiliangzi.cn/static/js/fileinput.min.js'></script>
+    <script type="text/javascript" src='http://www.meiliangzi.cn/static/js/locales/zh.js'></script>
+    <script>
+        $("#upload-image").fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: '/multifile/upload', // you must set a valid URL here else you will get an error
+            allowedFileExtensions : ['jpg', 'png','gif', 'jepg'],
+            overwriteInitial: false,
+            maxFileSize: 5000,
+            enctype: 'multipart/form-data',
+            maxFilesNum: 10,
+            slugCallback: function(filename) {
+                return filename.replace('(', '_').replace(']', '_');
+            }
+        });
+        $(function(){
+            var image_attrs = new Array()
+            {%if data.get('images')%}
+                {%for img in data.get('images')%}
+                    image_attrs.push('{{img}}')
+                {%end%}
+                $(".remove-img").click(function(){
+                    // 移除图片
+                    if(confirm("确认移除该图片？")){
+                        var index = $(this).attr('data-id')
+                        image_attrs.splice(index, 1)
+                        $("#md-"+index+"").remove()
+                        console.log(image_attrs)
+                    }
+                })
+            {%end%}
+            console.log(image_attrs)
+            $("#upload-image").on("fileuploaded", function(event, data, previewId, index) {
+                //文件上传成功后返回的数据
+                if(data.response.errno==0){
+                    var key = data.response.key;
+                    image_attrs.push(key)
+                }
+            });
+            $("#btn-submit").click(function(){
+                var goods_name = $("#goods_name").val()
+                var is_valid = true
+                if(!$("#goods_name").is_required()){ is_valid = false;}
+                if(!$("#price").is_required()){ is_valid = false}
+                if(!$("#introduce").is_required()){ is_valid = false}
+
+                if(image_attrs.length==0){
+                    alert('请先上传图片')
+                    return false;
+                } 
+                //alert(is_new)
+                if(is_valid){
+                    $.ajax({
+                        url: '',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {
+                            'goods_name': $("#goods_name").val(),
+                            'goods_type': $("#goods_type").val(),
+                            'price': $("#price").val(),
+                            'community': $("#community_list").val(),
+                            'is_new': $("input[name=is_new]:checked").val() ? 1 : 0,
+                            'is_global': $("input[name=is_global]:checked").val() ? 1 : 0,
+                            'can_pay_online': $("input[name=is_pay_online]:checked").val() ? 1 : 0,
+                            'user_id': $("#user_list").val(),
+                            'introduce': $("#introduce").val(),
+                            'images': JSON.stringify(image_attrs),
+                        },
+                        success: function(result){
+                            if(result.errno==0){
+                                if(confirm("发布成功")){location.href=result.next_url}
+                            }
+                        },error: function(){
+                            alert("操作失败")
+                        }
+                    })
+                }else{alert('请检测数据')}
+            })
+        })
+    </script>
+{%end%} 

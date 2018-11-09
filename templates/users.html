@@ -1,0 +1,45 @@
+{% extends backend_base.html %}
+{% block page-title %}用户列表{% end %} 
+{% block content %}
+
+<div class="text-right">
+	<a onclick="num = prompt('导入虚拟用户数量', 10),(num && (location.href = '/manager/add/virtual/user?num='+num))" class="btn btn-primary">导入</a>
+</div>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>头像</th>
+			<th>用户名</th>
+			<th>性别</th>
+			<th>认证状态</th>
+			<th>等级</th>
+			<th>商品总数</th>
+			<th>邀请总数</th>
+			<th>最后更新时间</th>
+			<th>操作</th>
+		</tr>
+	</thead>
+	<tbody>
+		{%for i in data%}
+			<tr>
+				<td><img class="avatar80" src="{{i['avatar']}}" alt="头像"></td>
+				<td><a href="/manager/user/info?id={{i['_id']}}">{{i["nickname"]}}</a></td>
+                <td>{{i['sex']}}</td>
+                <td>{{i['verify_status']}}</td>
+				<td>{{i["level"]}}{% if i['phone'] == '13000000000' %}虚拟用户{% end %}</td>
+				<td>{{i["selling_count"]}}</td>
+				<td>{{i["invite_count"]}}</td>
+				<td>{{i["last_update"]}}</td>
+				<td>
+					<a class="btn btn-primary" href='/manager/user/info?id={{i['_id']}}'>详情</a>
+					<a class="btn btn-primary push-user" href='javascript:void(0)' data-id="{{i['_id']}}">添加为发布用户</a>
+				</td>
+			</tr>
+		{%end%}
+	</tbody>
+</table>
+
+<div class="text-center">
+	{{ pagination }}
+</div>
+{% end %}

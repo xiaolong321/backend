@@ -1,0 +1,38 @@
+{% extends backend_base.html %}
+{% block page-title %}商品小区{% end %}
+{% block content %}
+<div class="text-right">
+    <a class="btn btn-primary" href="/manager/add?type=goods_community">新增</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+    	<tr>
+    		<th>小区图片</th>
+    		<th>小区名称</th>
+    		<th>经纬度</th>
+    		<th>描述</th>
+    		<th>操作</th>
+    	</tr>
+    </thead>
+    <tbody>
+    	{%for i in data%}
+    	<!--{#{i}#}-->
+		<tr>
+			<td><img class="goods-img" src="{{ i['logo'] }}" alt="分类图片……"></td>
+			<td>{{ i['name'] }}</td>
+			<td>{{ i['lng_lat'] }}</td>
+			<td>{{ i['desc'] }}</td>
+			<td>
+				<a class="btn btn-primary" href="/manager/del/community?id={{i['_id']}}">删除</a>
+				<a class="btn btn-primary" href="/manager/modify?type=goods_community&id={{i['_id']}}">修改</a>
+			</td>
+		</tr>
+    	{%end%}
+    </tbody>
+</table>
+
+<div class="text-center">
+    {{ pagination }}
+</div>
+{% end %}

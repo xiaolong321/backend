@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-cmn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="keywords" content="趣淘 趣淘是实现附件快速交易的App" />
+     <!-- Bootstrap Core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel='stylesheet' type='text/css' />
+    <!-- Custom CSS -->
+    <link href="/static/css/style.css?v=2" rel='stylesheet' type='text/css' />
+    <link href="/static/css/main.css" rel='stylesheet' type='text/css' />
+    <!-- Graph CSS -->
+    <link href="/static/css/lines.css" rel='stylesheet' type='text/css' />
+    <link href="/static/css/font-awesome.css" rel="stylesheet">
+    <!--sweetalert -->
+    <link href="/static/css/sweetalert.css" rel='stylesheet' type='text/css' />
+    <!-- jQuery -->
+    <script src="/static/js/jquery.min.js"></script>
+    <!--sweetalert -->
+    <script src="/static/js/sweetalert.min.js"></script>
+    <script src="/static/js/site-main.js"></script>
+    <!--webfonts-->
+    <link href='/static/css/font-roboto.css' rel='stylesheet' type='text/css'>
+    <!--//webfonts-->
+    <!-- Nav CSS -->
+    <link href="/static/css/custom.css" rel="stylesheet">
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="/static/js/metisMenu.min.js"></script>
+    <script src="/static/js/custom.js"></script>
+    <!-- Graph JavaScript -->
+    <!-- <script src="/static/js/d3.v3.js"></script>
+    <script src="/static/js/rickshaw.js"></script> -->
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="top1 navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <img class="navbar-brand" src="/static/images/logo@3x.png" />
+                <a class="navbar-brand" href="manager/index/">趣淘 - {% block page-title %}{% end %}</a>
+            </div>
+            <!-- /.navbar-header -->
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="/manager/index/"><i class="fa fa-home nav_icon"></i>首页<span class="fa arrow"></span></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-dashboard fa-fw nav_icon"></i>商品管理<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li><a href="/manager/goods/">商品列表</a></li>
+                                <li><a href="/manager/goods/type/">商品类别</a></li>
+                                <li><a href="/manager/goods/community/">商品小区</a></li>
+                                <li><a href="/manager/goods/review/">商品审核</a></li>
+                                <li><a href="/manager/goods/report">举报商品</a></li>
+                                <li><a href="/manager/comment">评论管理</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-laptop nav_icon"></i>订单管理<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li><a href="/manager/order/list">订单列表</a></li>
+                                <li><a href="/manager/order/cancel">取消订单审核</a></li>
+                            </ul>
+                       </li>
+                       <li>
+                            <a href="#"><i class="fa fa-laptop nav_icon"></i>趣淘圈管理<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li><a href="/manager/qtzone/list">趣淘圈列表</a></li>
+                            </ul>
+                       </li>
+                       <li>
+                            <a href="#"><i class="fa fa-laptop nav_icon"></i>用户管理<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li><a href="/manager/users/">用户列表</a></li>
+                                <li><a href="/manager/users/last_update">活跃用户列表</a></li>
+                                <li><a href="/manager/new/users/">最新用户</a></li>
+                                <li><a href="/manager/user/verify">实名认证</a></li>
+                                <li><a href="/manager/user/withdraw">提现审核</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-indent nav_icon"></i>数据统计<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li><a href="/manager/active/goods/">活跃商品</a></li>
+                                <li><a href="/manager/active/users/">活跃用户</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-envelope nav_icon"></i>运营管理<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <!--li><a href="/manager/virtual/users/">虚拟用户管理</a></li>
+                                <li><a href="/manager/virtual/goods/">商品导入</a></li>
+                                <li><a href="/manager/message/">消息管理</a></li -->
+                                <li><a href="/manager/advert">app 轮播图管理</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-check-square-o nav_icon"></i>系统设置<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li><a href="/login_out">安全退出</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+        <div id="page-wrapper">
+            <div class="main-content">
+                {% block search %}
+                <form>
+                    <div class="input-group">
+                        <input class="form-control1 input-search" id="search" name="search" type="search" placeholder="名称、发布者" required>
+                        <span class="input-group-btn">
+                            <button class="btn btn-success" type="submit"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </form>
+                {% end %}
+                {% block content %}{% end %}
+            </div>
+        </div>
+
+        <div class="copy">
+            <div class="container">
+                版权部分
+            </div>
+        </div>
+    </div>
+    <!-- /#wrapper -->
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script>
+        $(function(){
+            var current_url = window.location.pathname
+            $("#side-menu ul>li >a").each(function(){
+                if($(this).attr("href")==current_url){
+                    $(this).addClass("active")
+                    var a_parent = $(this).parent("li")
+                    a_parent.addClass("active")
+                    //a_parent.parent("ul").parent("li").addClass("active")
+                }else{
+                    $(this).removeClass("active")
+                }
+            })
+        })
+        /**
+         * 当前菜单高亮
+         */
+        //var title = $('.page-title').text();
+        //var $li_a_list = $('#side-menu>li>a')
+        //$li_a_list.each(function(){
+        //    var $this = $(this);
+        //    if (title == $this.text()){
+        //        $this.parent().addClass('active');
+        //        return false;
+        //    }
+        //});
+    </script>
+</body>
+</html>

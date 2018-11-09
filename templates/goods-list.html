@@ -1,0 +1,294 @@
+{% extends backend_base.html %}
+{% block page-title %}商品列表{% end %}
+{% block content %}
+<script src="/static/js/pagination_query.js"></script>
+<script type="text/javascript" src="/static/js/ajaxfileupload.js"></script>
+<script>
+$(function(){
+    $('.group-checkable').change(function () {
+        var set = jQuery(this).attr("data-set");
+        var checked = jQuery(this).is(":checked");
+        var count = 0
+        jQuery(set).each(function () {
+            if (checked) {
+                count += 1
+                $(this).prop("checked", true);
+            } else {
+                $(this).prop("checked", false);
+            }
+        });
+        $("#select_count span").text(count)
+    });
+    $("td input[type=checkbox]").change(function(){
+        $("#select_count span").text($("td input[type=checkbox]:checked").length)
+    })    
+    // index_select
+    $("#index_select").click(function(){
+        //批量删除
+        if(confirm('确定将选中商品设置为精品？')){
+            var data = new Array()
+            $("td input[type=checkbox]:checked").each(function(){
+                data.push($(this).val())
+            })
+            if(data.length > 0){
+                $.ajax({
+                    url: '',
+                    data: {"arry_select": JSON.stringify(data)},
+                    type: 'post',
+                    dataType: 'json',
+                    success: function(data){
+                        if(data.errno == 0){
+                            location.reload()
+                        }
+                    },error: function(){
+                        alert("系统正忙……，请稍后再试")
+                    }
+                })
+            }
+        }
+    })
+    $("#delete_select").click(function(){
+        //批量删除
+        if(confirm('确定删除选中？')){
+            var data = new Array()
+            $("td input[type=checkbox]:checked").each(function(){
+                data.push($(this).val())
+            })
+            if(data.length > 0){
+                $.ajax({
+                    url: '',
+                    data: {"arry_delete": JSON.stringify(data)},
+                    type: 'post',
+                    dataType: 'json',
+                    success: function(data){
+                        if(data.errno == 0){
+                            location.reload()
+                        }
+                    },error: function(){
+                        alert("系统正忙……，请稍后再试")
+                    }
+                })
+            }
+        }
+    })
+    $(".unselect").click(function(){
+        // 取消设置精选
+        var id = $(this).attr('data-id')
+        if(confirm('确定从精品中取消该商品？')){
+            $.ajax({
+                url: '',
+                data: {"id": id, 'action': 'unselect'},
+                type: 'post',
+                dataType: 'json',
+                success: function(data){
+                    if(data.errno == 0){
+                        location.reload()
+                    }
+
+                },error: function(){
+                    alert("系统正忙……，请稍后再试")
+                }
+            })
+        }
+    })
+    $(".select").click(function(){
+        // 设置精选
+        var id = $(this).attr('data-id')
+        if(confirm('确定设置该商品为精品？')){
+            $.ajax({
+                url: '',
+                data: {"id": id, 'action': 'select'},
+                type: 'post',
+                dataType: 'json',
+                success: function(data){
+                    if(data.errno == 0){
+                        location.reload()
+                    }
+
+                },error: function(){
+                    alert("系统正忙……，请稍后再试")
+                }
+            })
+        }
+    })
+    $("#push_select").click(function(){
+        //批量上架
+        if(confirm('确定上架选中？')){
+            var data = new Array()
+            $("td input[type=checkbox]:checked").each(function(){
+                data.push($(this).val())
+            })
+            if(data.length > 0){
+                $.ajax({
+                    url: '',
+                    data: {"arry_push": JSON.stringify(data), 'status': '0'},
+                    type: 'post',
+                    dataType: 'json',
+                    success: function(data){
+                        if(data.errno == 0){
+                            location.reload()
+                        }
+
+                    },error: function(){
+                        alert("系统正忙……，请稍后再试")
+                    }
+                })
+            }
+        }
+    })
+    $("#pass_select").click(function(){
+        //批量下架
+        if(confirm('确定下架选中？')){
+            var data = new Array()
+            $("td input[type=checkbox]:checked").each(function(){
+                data.push($(this).val())
+            })
+            if(data.length > 0){
+                $.ajax({
+                    url: '',
+                    data: {"arry_push": JSON.stringify(data), 'status': '1'},
+                    type: 'post',
+                    dataType: 'json',
+                    success: function(data){
+                        if(data.errno == 0){
+                            location.reload()
+                        }
+
+                    },error: function(){
+                        alert("系统正忙……，请稍后再试")
+                    }
+                })
+            }
+        }
+    })    
+
+
+    function getFileName(o){
+        var pos = o.lastIndexOf('\\')
+        return o.substring(pos+1)
+    }
+    $('#upload-excel').change(function(){
+        file = $(this).val()
+        name = getFileName($(this).val())
+        ex_name = name.substring(name.lastIndexOf('.')+1, name.lenght)
+        if (ex_name != 'xls' &&  ex_name != 'xlsx' && ex_name != 'xltx'){
+            alert('文件格式不对，请上传excel文件')
+            return false
+        }
+        $.ajaxFileUpload({
+            url :'/manager/goods/import/',
+            secureuri :false,
+            fileElementId : "upload-excel", //file 必须有name='avatar'属性
+            dataType : 'json',
+            complete: function () {//只要完成即执行，最后执行  
+                //location.reload()
+            },
+            success: function (data, status){
+                if(data.errno==0){ 
+                    location.reload()
+                }else if(data.errno==400){
+                    alert(data.msg)
+                }
+                else{
+                    alert('数据格式错误，请核实excel表数据')
+                }
+            },
+            error: function (data, status, e){ 
+                alert("上传失败")
+            } 
+        })
+       //$('#file_upload_form').submit()
+    })
+
+})
+</script>
+<div class="text-right">
+    <a class="btn btn-primary" href="/manager/api/pull-off-shelves">下架三天前的所有商品</a>
+    <a class="btn btn-default" href="/manager/goods/add">添加商品</a>
+    <a class="btn btn-primary upload-a" style="" role='button' href="javascript:void(0)">
+        <span class="glyphicon glyphicon-open"></span>批量导入
+        <input id='upload-excel' name="upload-excel" class='btn-upload' type="file" >
+    </a>
+</div>
+<div class="row" style="margin-bottom:10px">
+    <div class="col-md-12">
+        <div class="btn-group btn btn-info">
+            <a class="btn green" id="select_count" href="#" data-toggle="dropdown">
+             已选<span>0</span>项
+            <i class="fa fa-angle-down"></i>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:void(0)" id="index_select"><i class="fa fa-upload"></i> 精选</a></li>
+                <li><a href="javascript:void(0)" id="push_select"><i class="fa fa-check-square-o"></i> 上架</a></li>
+                <li><a href="javascript:void(0)" id="pass_select"><i class="fa fa-lock"></i> 下架</a></li>
+                <li><a href="javascript:void(0)" id="delete_select"><i class="fa fa-trash-o"></i> 删除</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<ul class="nav nav-tabs">
+    {% for i, tab in enumerate(tabs) %}
+    <li{% if status == str(i) %} class="active"{% end %}>
+        <a href="?status={{i}}">{{tab}} {%if status==str(i)%}({{num}})件{%end%}</a>
+    </li>
+   {% end %}
+</ul>
+<table class="table table-striped" id="sample_1">
+    <thead>
+        <tr>
+            <th style="width:8px;">
+                <input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes" />
+            </th>
+            <th>商品图片</th>
+            <th>商品名称</th>
+            <th>商品类别</th>
+            <th>发布者</th>
+            <th>发布日期</th>
+            <th>状态</th>
+            <th>价格</th>
+            <th>是否全局推送</th>
+            <th>访问量</th>
+            <th>是否精品</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for i in data%}
+        <tr>
+            <td>
+                <input name="goods_id[]"  type="checkbox" class="checkboxes" value="{{i['_id']}}"/>
+            </td>
+            <td>{%if i['images']%}<img class="goods-img" src="{{i['images'][0]}}" alt="商品图片……">{%else%}<img  class="goods-img" scr='' alt="无图片"/>{%end%}</td>
+            <td>{{i["goods_name"]}}</td>
+            <td>{{"".join(i["goods_type"]) }} </td>
+            <td><a href="/manager/user/info?id={{i['seller_id']}}">{{i["seller"].get('nickname')}}</a></td>
+            <td>{{i["create_at"]}}</td>
+            <td>{% if i["status"] == '0' %}上架中{% elif i["status"] == '1' %}已下架{% elif i["status"] == '2' %}已归档{% else %}未知状态{{ i["status"] }}{% end %}</td>
+            <td>￥{{i["price"]}}</td>
+            <td>{%if int(i['is_global'])%} 是 {%else%} 否 {%end%}
+            <td>{{i['record_views']}}</td>
+            <td>{%if int(i.get('is_select', '0')) %} 是 {%else%} 否 {%end%}</td>
+            <td>
+            {% if i["status"] == '1' %}
+                <a class="btn btn-primary" href="/manager/api/update/goods?gid={{ i["_id"] }}&attr=status&v=0">上架</a>
+            {% else %}
+                <a class="btn btn-primary" href="/manager/api/update/goods?gid={{ i["_id"] }}&attr=status&v=1">下架</a>
+            {% end %}
+            <a class="btn btn-primary" href="/manager/api/update/goods?gid={{ i["_id"] }}&attr=status&v=2">归档</a>
+            <a class="btn btn-default" href="/manager/goods/info/{{ i["_id"] }}">详情</a>
+            
+            {%if int(i.get('is_select', '0')) %}
+                <a class="btn btn-danger unselect" data-id="{{ i["_id"] }}">取消精选</a>
+            {%else%}
+                <a class="btn btn-info select" data-id="{{ i["_id"] }}">首页精选</a>
+            {%end%}
+            </td>
+        </tr>
+        {%end%}
+    </tbody>
+</table>
+
+<div class="text-center" query="status={{status}}">
+    {{ pagination }}
+</div>
+{% end %}

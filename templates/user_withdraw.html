@@ -1,0 +1,56 @@
+{% extends backend_base.html %}
+{% block page-title %}提现审核{% end %} 
+{% block content %}
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>头像</th>
+			<th>用户名</th>
+			<th>账户信息</th>
+			<th>提现金额</th>
+			<th>操作</th>
+		</tr>
+	</thead>
+	<tbody>{%for item in data%}
+		<tr _id="{{item._id}}">
+			<td>
+				<img class="avatar80" src="{{ item.avatar }}" alt="头像">
+			</td>
+			<td>{{item.nickname}}</td>
+			<td>
+				手机号: {{item.phone}} <br>
+				支付宝帐号: {{item.alipay}}
+			</td>
+			<td>
+				原始: {{item.money}} 元<br>
+				手续费(%3): {{fee(item.money)}} 元<br>
+				扣除手续费后: {{after_fee(item.money)}} 元
+			</td>
+			<td>
+				<input type="button" class="btn btn-primary btn-agree" value="通过">
+				<input type="button" class="btn btn-danger btn-disagree" value="拒绝">
+			</td>
+		</tr>
+	{%end%}</tbody>
+</table>
+
+<div class="text-center">
+	{{ pagination }}
+</div>
+<script>
+	// 操作
+	$(".btn-agree,.btn-disagree").click(function(){
+		var $this = $(this);
+		data = {
+			id: $this.parents('tr:eq(0)').attr('_id'),
+			action: $(this).hasClass('btn-agree') ? '1' : 0
+		};
+		$.post(null, data, function(data){
+			if (data.errno == 0) {
+				// 改变提示文字，去掉按钮
+				$this.parent().html('已' + $this.val());
+			}
+		});
+	});
+</script>
+{% end %}

@@ -1,0 +1,48 @@
+{% extends backend_base.html %}
+{% block page-title %}举报商品{% end %}
+{% block content %}
+<script src="/static/js/pagination_query.js"></script>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>商品图片</th>
+            <th>商品名称</th>
+            <th>发布者</th>
+            <th>状态</th>
+            <th>价格</th>
+            <th>举报用户</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for i in data%}
+        <tr>
+            <td><img class="goods-img" src="{{i['goods_info']['images'][0]}}" alt="商品图片……"></td>
+            <td><a href="/manager/goods/info/{{i['goods_id']}}">{{i['goods_info']["goods_name"]}}</a></td>
+            <td><a href="/manager/user/info?id={{i['goods_info']['seller_id']}}">{{i['goods_info']['user_info'].get("nickname")}}</a></td>
+            <td>
+                {% if i['goods_info']["status"] == '0' %}
+                上架中
+                {% elif i['goods_info']["status"] == '1' %}
+                    已下架
+                {% elif i['goods_info']["status"] == '2' %}
+                已归档
+                {% else %}
+                    未知状态
+                {{ i['goods_info']["status"] }}
+                {% end %}
+            </td>
+            <td>￥{{i['goods_info']["price"]}}</td>
+            <td>{{i['report_user'].get('nickname')}}</td>
+            <td>
+                <a class="btn btn-danger delete" href="javascript:void(0)"  data-id="{{i['_id']}}">删除</a>
+            </td>
+        </tr>
+        {%end%}
+    </tbody>
+</table>
+
+<div class="text-center" >
+    {{ pagination }}
+</div>
+{% end %}

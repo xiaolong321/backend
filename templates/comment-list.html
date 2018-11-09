@@ -1,0 +1,36 @@
+{% extends backend_base.html %}
+{% block page-title %}趣淘－评论管理{% end %}
+{% block content %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>商品图片</th>
+            <th>评论用户</th>
+            <th>评论内容</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for i in data%}
+        <tr>
+            <td>
+                <img class="goods-img" src="{{ i['goods_info']['images'][0] }}" alt="分类图片……">
+            </td>
+            <td>
+                <a href="/manager/user/info?id={{i['user_id']}}">{{ i['user_info'].get('nickname', '') }}</a>
+            </td>
+            <td>
+               {{i['comment_body']}} 
+            </td>
+            <td>
+                <a class="btn btn-danger delete" href="javascript:void(0)"  data-id="{{i['_id']}}">删除</a>
+            </td>
+        </tr>
+        {%end%}
+    </tbody>
+</table>
+
+<div class="text-center">
+    {{ pagination }}
+</div>
+{% end %}

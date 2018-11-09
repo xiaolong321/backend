@@ -1,0 +1,125 @@
+{%extends backend_base.html%}
+{%block title%} 添加轮播图信息{%end%}
+{%block search%} {%end%}
+{%block content%}
+    <style>
+        .form-control{
+            border: 1px solid #ccc !important;
+            border-radius: 4px !important;
+        }
+        .margin-top-20{
+            margin-top: 20px;
+        }
+        #comment_panel{
+            padding-left: 15px;
+        }
+        #comment_panel li{
+            border-bottom: 1px solid #ddd;
+            padding: 20px 0px;
+        }
+    </style>
+    <h3 class="page-header">基本信息</h3>
+    <div class="row">
+        <div class="col-md-12">
+            <form>
+                <div class="form-group col-md-6">
+                    <label for="">标题</label>
+                    <input type="text" class="form-control" value="" id="name" placeholder="标题">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="">类型</label>
+                    <select class="form-control" id="type">
+                        {%for key in type_list%}
+                            <option value="{{key}}">{{type_list[key]}}</option>
+                        {%end%}
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="">链接</label>
+                    <input type="text" class="form-control" id="link" placeholder="跳转链接">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="">优先级</label>
+                    <input type="text" class="form-control" id="point" placeholder="优先级" value="1">
+                </div>
+            </form>
+        </div>
+    </div>
+    <h3 class="page-header">图片</h3>
+    <div style="margin-bottom:20px">
+        <p style="color:grey">＊提示：填写图片链接地址将不用选择图片</p>
+        <input type="text" class="form-control" id="images" placeholder="图片链接地址" value="">
+    </div>
+    <div class="">
+        <input type="file" name="image" id="upload-image" class="file" multiple data-max-file-count="1"/> 
+    </div>
+    <div class="">
+        <p style="color:grey">＊提示：请上传图片后再点击“提交”</p>
+        <button class="btn btn-info btn-fill" id="btn-submit">提交</button>
+    </div>
+    <link rel="stylesheet" type="text/css" href="http://www.meiliangzi.cn/static/css/fileinput.min.css">
+    <script type="text/javascript" src='http://www.meiliangzi.cn/static/js/fileinput.min.js'></script>
+    <script type="text/javascript" src='http://www.meiliangzi.cn/static/js/locales/zh.js'></script>
+    <script>
+        $("#upload-image").fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: '/multifile/upload', // you must set a valid URL here else you will get an error
+            allowedFileExtensions : ['jpg', 'png','gif', 'jepg'],
+            overwriteInitial: false,
+            maxFileSize: 5000,
+            enctype: 'multipart/form-data',
+            maxFilesNum: 1,
+            slugCallback: function(filename) {
+                return filename.replace('(', '_').replace(']', '_');
+            }
+        });
+        $(function(){
+            var image_attrs = new Array()
+            $("#upload-image").on("fileuploaded", function(event, data, previewId, index) {
+                //文件上传成功后返回的数据
+                if(data.response.errno==0){
+                    var key = data.response.key;
+                    image_attrs.push(key)
+                }
+            });
+            $("#btn-submit").click(function(){
+                var is_valid = true
+                if(!$("#name").is_required()){ is_valid = false;}
+                if(!$("#link").is_required()){ is_valid = false}
+                if(!$("#point").is_required()){ is_valid = false}
+                 
+                //alert(is_new)
+                if(is_valid){
+                    if($("#images").val() !=''){
+                        image_attrs.push($("#images").val())
+                    }
+                    if(image_attrs.length==0){
+                        alert('请先上传图片')
+                        return false;
+                    }
+                    $.ajax({
+                        url: '',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {
+                            'name': $("#name").val(),
+                            'type': $("#type").val(),
+                            'link': $("#link").val(),
+                            'point': $("#point").val(),
+                            'images': image_attrs.toString(),
+                        },
+                        success: function(result){
+                            if(result.errno==0){
+                                if(confirm("发布成功")){location.href=result.next_url}
+                            }else{
+                                alert("请检查参数")
+                            }
+                        },error: function(){
+                            alert("操作失败")
+                        }
+                    })
+                }else{alert('请检测数据')}
+            })
+        })
+    </script>
+{%end%} 

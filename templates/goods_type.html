@@ -1,0 +1,40 @@
+{% extends backend_base.html %}
+{% block page-title %}商品类别{% end %}
+{% block content %}
+<div class="text-right">
+    <a class="btn btn-primary" href="/manager/add?type=goods_type">新增</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>分类图片</th>
+            <th>分类图片2</th>
+            <th>分类名称</th>
+            <th>分类拓展</th>
+            <th>优先级</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for i in data%}
+        <!--{{i}}-->
+        <tr>
+            <td><img class="goods-img" src="{{ i['logo'] }}" alt="分类图片……"></td>
+            <td><img class="goods-img" style="width:120px;height:auto;" src="{{ i.get('logo2') }}" alt="分类图片……"></td>
+            <td>{{ i['name'] }}</td>
+            <td>{{ i['cat'] }}</td>
+            <td>{{ i['seq'] }}</td>
+            <td>
+                <a class="btn btn-primary" href="/manager/modify?type=goods_type&id={{i['_id']}}">修改</a>
+                <a class="btn btn-danger" href="/manager/del/goodstype?id={{i['_id']}}">删除</a>
+            </td>
+        </tr>
+        {%end%}
+    </tbody>
+</table>
+
+<div class="text-center">
+    {{ pagination }}
+</div>
+{% end %}

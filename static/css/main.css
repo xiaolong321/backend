@@ -1,0 +1,71 @@
+body {
+	font-family: 'Microsoft YaHei';
+}
+.main-content {
+	padding: 10px;
+}
+.text-float-left{
+    float: left;
+}
+.avatar-img{
+    width: 60px;
+    height: 60px;
+}
+/* 侧边栏菜单高亮 */
+#side-menu a.active {
+    background-color: #4c6c61!important;
+    color: #fff;
+}
+/*#side-menu .nav>li>a:focus, #side-menu .nav>li>a:hover {
+    background-color: #4c6c61!important;
+}*/
+
+.goods-img{
+	width: 120px;
+	height: 120px;
+}
+.avatar80{
+	width: 80px;
+	height: 80px;
+}
+.brand-logo{
+	margin-left: 50px;
+}
+.btn-fill{
+    width: 100%;
+}
+.icon-required{
+    position: absolute;
+    left: -5px;
+    float: left;
+    top: 50%;
+    clear: both;
+    color: red;
+    font-size: 26px;
+}
+.btn-upload{
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+}
+.upload-a{
+    position: relative;
+}
+.img-panel{
+    position: relative;   
+    border: 1px solid #ddd;
+    box-shadow: 1px 1px 5px 0 #a2958a;
+    padding: 6px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+.img-panel img{
+    width: 100%;
+    height: 180px;
+}
+.img-panel i.remove-img{
+    float: right;
+    margin-top: 5px;
+}

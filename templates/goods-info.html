@@ -1,0 +1,93 @@
+{%extends backend_base.html%}
+{%block title%} 商品详情 {%end%}
+{%block search%} {%end%}
+{%block content%}
+    <style>
+        .form-control{
+            border: 1px solid #ccc !important;
+            border-radius: 4px !important;
+        }
+        .margin-top-20{
+            margin-top: 20px;
+        }
+        #comment_panel{
+            padding-left: 15px;
+        }
+        #comment_panel li{
+            border-bottom: 1px solid #ddd;
+            padding: 20px 0px;
+        }
+    </style>
+    <h3 class="page-header">商品信息</h3>
+    <div class="row">
+        <div class="col-md-2 text-center">
+            <img src="{{data['avatar']}}" class="avatar-img img-circle">
+            <div class="margin-top-20">{{data['nickname']}}</div>
+        </div>
+        <div class="col-md-10">
+            <form>
+                <div class="form-group col-md-6">
+                    <label for="">商品名称</label>
+                    <input type="text" class="form-control" value="{{data['goods_name']}}" id="" placeholder="">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="">商品类别</label>
+                    <input type="text" class="form-control" value="{{data['goods_type']}}" id="" placeholder="">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="">价格</label>
+                    <input type="text" class="form-control" value="{{data['price']}}" id="" placeholder="">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="">状态</label>
+                    <p>
+                        {%if data['status'] == '0' %} 上架 {%end%}
+                        {%if data['status'] == '1' %} 下架 {%end%}
+                        {%if data['status'] == '2' %} 归档 {%end%}
+                    </p>
+                </div>
+                <!--div class="form-group col-md-6">
+                    <button type="button"></button>
+                </div-->
+
+                <!--div class="form-group col-md-6">
+                    <label for="">商品名称</label>
+                    <input type="text" class="form-control" value="{{data['goods_name']}}" id="" placeholder="">
+                </div-->
+            </form>
+        </div>
+    </div>
+    <h3 class="page-header">商品图片</h3>
+    <div class="row">
+        <ul class="list-unstyled">
+            {%for img in data['images']%}
+            <li class="col-md-3">
+                <img src="{{img}}" width="100%">
+            <li>
+            {%end%}
+        </ul>    
+    </div>
+    <h3 class="page-header">商品评论</h3>
+    <div class="row">
+        <ul class="list-unstyled" id="comment_panel">
+            {%for comment in data['comment_data']%}
+            <li class="col-md-12">
+                <div class="col-md-1">
+                    <img src="{{comment['avatar']}}" class="avatar-img img-circle"/>
+                </div>
+                <div class="col-md-8">
+                    <div class="text-float-left">
+                       评论内容： 
+                    </div>
+                    <div>
+                        {{comment['comment_body']}}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <span style="color:grey;font-size:12px">{{comment['comment_time']}}</span> 
+                </div>
+            </li>
+            {%end%}
+        <ul>
+    </div>
+{%end%} 
