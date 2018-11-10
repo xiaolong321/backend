@@ -59,7 +59,7 @@ class Application(tornado.web.Application):
 #导入所有的handler
 #每个apps 的子项目都必须有一个handler.py
 for app_name in settings.APPS:
-    __import__('apps.%s' % app_name, globals(), locals(), ['handlers'], -1)
+    __import__('apps.%s' % app_name, globals(), locals(), ['handlers'], 0)
 
 
 def main():

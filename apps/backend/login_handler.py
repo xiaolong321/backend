@@ -1,9 +1,15 @@
 #!/usr/bin/env python
 # coding:utf-8
-import urllib
+
 from apps.api.common import BaseHandler
 from lib.routes import route
 import settings
+import sys
+
+if sys.version_info.major == 3:
+    import urllib.parse as parse
+else:
+    import urllib as parse
 
 def login():
     def wrap(view_func):
@@ -14,7 +20,7 @@ def login():
                 if self.request.uri.count("next") > 3:
                     return self.redirect(url)
                 if "?" not in url:
-                    url += "?" + urllib.urlencode(dict(next=self.request.uri))
+                    url += "?" + parse.urlencode(dict(next=self.request.uri))
                 return self.redirect(url)
             return view_func(self, *args, **kwargs)
         return is_login

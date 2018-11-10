@@ -11,7 +11,7 @@ try:
     #connect('blog', host='192.168.3.1', username='root', password='1234')
 
 except ConnectionError as e:
-    print e
+    print(e)
     sys.exit()
 
 class Users(Document):

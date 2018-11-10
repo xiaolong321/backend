@@ -1,8 +1,10 @@
 #coding:utf-8
+from __future__ import print_function
+
 from apps.api.common import BaseHandler
 from lib.routes import route
 from lib.qiniu_class import Uploader
-from login_handler import login
+from .login_handler import login
 from settings import PAGE_LIMIT
 from bson import ObjectId
 from apps.api.utils import generate_geohash
@@ -174,7 +176,7 @@ class ModifyHandler(BaseHandler, Uploader):
                 'seq': seq
             }
             logo = self.request.files.get('logo')
-            print logo, ">>>>>>>>"
+            print(logo, ">>>>>>>>")
             if logo:
                 logo = self.save_file_to_qiniu(logo[0])
                 data['logo'] = logo

@@ -1,5 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from __future__ import division
+
 import time, datetime
 import settings
 import json
@@ -8,7 +10,7 @@ try:
     import ujson as json
 except ImportError:
     import json
-import urlparse
+# import urlparse
 import ast
 import urllib
 import math
@@ -82,7 +84,7 @@ class BareboneHandler(tornado.web.RequestHandler):
 
     def paginator(self, result_count):
         #计算总页数，向上取整，向下取整math.floor
-        return int(math.ceil(float(result_count) / PAGE_LIMIT))
+        return int(math.ceil(result_count / PAGE_LIMIT))
 
     def datetime2timestamp(self, d):
         # datetime 2 timestamp
@@ -120,7 +122,7 @@ class BareboneHandler(tornado.web.RequestHandler):
 
     def pagination(self, num, page):
     # TODO 搜索后的分页跳转会清掉s=xx
-        page_num = num/PAGE_LIMIT + (not (not num%PAGE_LIMIT))
+        page_num = num//PAGE_LIMIT + (not (not num%PAGE_LIMIT))
         page_list = range(page_num)[page-3 if page-3 >=0 else 0:page+3 if page+3 <= page_num else page_num]
         page_list = [str(x+1) for x in page_list]
         if '1' not in page_list:

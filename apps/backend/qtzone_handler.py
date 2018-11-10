@@ -2,7 +2,7 @@
 from apps.api.common import BaseHandler, json
 from lib.routes import route
 from lib.jpush import push_msg
-from login_handler import login
+from .login_handler import login
 from settings import PAGE_LIMIT, DISTANCE
 from bson import ObjectId
 from apps.api.utils import generate_geohash, geohash_neighbors, filter_distance

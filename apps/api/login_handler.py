@@ -1,4 +1,6 @@
 #coding:utf-8
+from __future__ import print_function
+
 import time
 from hashlib import md5
 from bson import ObjectId
@@ -132,7 +134,7 @@ class ApiUserLogin(BaseHandler):
         password = self.get_argument('password', '')
         _lng_lat = self.get_argument('lng_lat', '') #经纬度
         
-        print "%s.,>>>>>" % username
+        print("%s.,>>>>>" % username)
         if username and password:
             find_data = {
                 'username': username,

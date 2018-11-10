@@ -3,7 +3,7 @@ from apps.api.common import BaseHandler
 from . import ManagerHandler
 from lib.routes import route
 from lib.jpush import push_msg
-from login_handler import login
+from .login_handler import login
 from bson import ObjectId
 from apps.api.utils import get_service_fee, timestampTodate
 from settings import PAGE_LIMIT

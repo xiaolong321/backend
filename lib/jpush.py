@@ -1,5 +1,9 @@
 #encoding: utf8
+from __future__ import print_function
+
 import json, requests
+
+
 
 app_key = "2ef677a3ceba2906dfef5de9"
 master_secret = "57a1a34e8a145ea4edc84388"
@@ -34,7 +38,7 @@ class JPush(object):
         }
         if title:
             payload['notification']['title'] = title
-        print payload, ">>>>>>>"
+        print(payload, ">>>>>>>")
         result = requests.post('https://api.jpush.cn/v3/push', auth=(app_key, master_secret), data=json.dumps(payload), headers=headers).content
         return result
 
@@ -71,7 +75,7 @@ class JPush(object):
         }
         if title:
             payload['notification']['title'] = title
-        print payload, ">>>>>>>"
+        print(payload, ">>>>>>>")
         result = requests.post('https://api.jpush.cn/v3/push', auth=(app_key, master_secret), data=json.dumps(payload), headers=headers).content
         return result   
 
@@ -111,6 +115,6 @@ def push_msg(user_id, message, title = None, extra = 'extra_default'):
         payload['notification']['title'] = title
     #if extra:
     #    payload['notification']['extra'] = extra if isinstance(extra, dict) else {"extra": extra}
-    print payload, ">>>>>>>"
+    print(payload, ">>>>>>>")
     result = requests.post('https://api.jpush.cn/v3/push', auth=(app_key, master_secret), data=json.dumps(payload), headers=headers).content
     return result

@@ -3,8 +3,11 @@
 import xlrd
 import sys
 import re
-reload(sys)
-sys.setdefaultencoding('utf-8')
+
+py_version = sys.version_info.major
+if py_version == 2:
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
 
 
 def open_excel(filepath):
@@ -38,5 +41,5 @@ def main(filepath):
     return table
 
 if __name__ =="__main__":
-    print "ok"
+    print("ok")
 
