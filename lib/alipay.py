@@ -101,7 +101,7 @@ def verify_aplipay(partner, notify_id):
     payload = {'service':'notify_verify', 'partner':partner, 'notify_id':notify_id}
     r = requests.get(ALIPAY_REMOTE_ORIGIN_URL, params=payload)
     result = r.text
-    print result
+    print(result)
     if result.upper() == "TRUE":
         return True
     return False

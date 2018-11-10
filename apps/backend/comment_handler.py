@@ -5,7 +5,7 @@ from lib.routes import route
 from lib.jpush import push_msg
 from lib.qiniu_class import Uploader
 from lib.excelRead import excel_table_byindex
-from login_handler import login
+from .login_handler import login
 from settings import PAGE_LIMIT, DISTANCE, TMP_PATH 
 from bson import ObjectId
 from apps.api.utils import generate_geohash, geohash_neighbors, filter_distance,\

@@ -1,11 +1,14 @@
 #coding: utf-8
+
+from __future__ import print_function
+
 from bson import ObjectId
 from apps.api.common import BaseHandler
 from apps.api.utils import auth_decorator
 from lib.routes import route
 from lib import alipay
 from lib.jpush import push_msg
-from user_handler import ApiUserAccountHandler
+from .user_handler import ApiUserAccountHandler
 from apps.models import Goods, User
 import random, time
 import settings
@@ -87,7 +90,7 @@ class ApiMoreOrderGenerate(BaseHandler):
         data = self.get_args(['goods_id', 'quantity', 'receiver_name', 'receiver_phone', 'receiver_address', 'custom_msg'],
             {'quantity': (int, 1)})
         goods_id_list = data.goods_id.split(',')  # "id, id, id,"
-        print goods_id_list, "g" * 10
+        print(goods_id_list, "g" * 10)
         data.order_num = str(int(time.time()))[2:] + str(random.randint(1000,9999))
         for item in goods_id_list:
             if item:
@@ -99,7 +102,7 @@ class ApiMoreOrderGenerate(BaseHandler):
                 data.status = "0" # 订单状态
                 if data.get('_id', ''):
                     del data['_id']
-                print data, ">>>>>>>"
+                print(data, ">>>>>>>")
 
                 self.db.Order.insert(data)
         sign_str = alipay.moving_signed_order_str(RSA_PRIVATE, PARTNER, SELLER,

@@ -4,7 +4,7 @@ from . import ManagerHandler
 from lib.routes import route
 from lib.jpush import push_msg
 from lib.type import DictRef
-from login_handler import login
+from .login_handler import login
 from settings import PAGE_LIMIT
 from apps.api.utils import timestampTodate, generate_geohash, generate_access_token, get_service_fee
 from bson import ObjectId

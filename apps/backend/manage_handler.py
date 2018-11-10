@@ -1,7 +1,7 @@
 #coding:utf-8
 from apps.api.common import BaseHandler
 from lib.routes import route
-from login_handler import login
+from .login_handler import login
 from settings import PAGE_LIMIT
 from apps.api.utils import timestampTodate, get_attach
 
